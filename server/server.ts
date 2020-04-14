@@ -1,14 +1,15 @@
 import express from "express";
 import path from "path";
 
-// initalize app
 const app = express();
-
-// check if envorniment is development
 const isDev = process.env.NODE_ENV === "development";
-
-//set the port
 const PORT = isDev ? 3001 : 3000;
+
+// IMPORT ROUTERS
+import loginRouter from "./routes/login";
+import groupsRouter from "./routes/groups";
+import listsRouter from "./routes/lists";
+import itemsRouter from "./routes/items";
 
 /**
  * PARSE THE BODY OF REQUEST
@@ -19,6 +20,14 @@ app.use(express.json());
  * HANDLE REQUESTS FOR STATIC FILES
  */
 app.use("/static", express.static(path.resolve(__dirname, "../build/static")));
+
+/**
+ * ROUTE TRAFFIC
+ */
+app.use("/login", loginRouter);
+app.use("/groups", groupsRouter);
+app.use("/lists", listsRouter);
+app.use("/items", itemsRouter);
 
 // serve html when in production
 if (!isDev) {
