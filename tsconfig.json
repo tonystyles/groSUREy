@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
+    "sourceMap": true,
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -20,6 +21,10 @@
     "jsx": "react"
   },
   "include": [
-    "src"
+    "src",
+    "server/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }
