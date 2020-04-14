@@ -1,3 +1,6 @@
+# custom
+build/
+
 # Logs
 logs
 *.log

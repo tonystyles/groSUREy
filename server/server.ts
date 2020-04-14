@@ -1,13 +1,28 @@
-import express from 'express'
-import { Application } from 'express'
+import express from "express";
+import path from "path";
 
-// Create a new express app instance
-const app: Application = express();
+const app = express();
 
-app.get('/', function (req, res) {
+const isDev = process.env.NODE_ENV === "development";
 
-res.send('Hello World?');
-});
-app.listen(3001, function () {
-console.log('App is listening on port 3001!');
+const PORT = isDev ? 3001 : 3000;
+
+/**
+ * PARSE THE BODY OF REQUEST
+ */
+app.use(express.json());
+
+/**
+ * HANDLE REQUESTS FOR STATIC FILES
+ */
+app.use("/static", express.static(path.resolve(__dirname, "../build/static")));
+
+if (!isDev) {
+  app.get("/", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../build/index.html"));
+  });
+}
+
+app.listen(PORT, () => {
+  console.log(`${process.env.NODE_ENV} server is listening on port ${PORT}...`);
 });

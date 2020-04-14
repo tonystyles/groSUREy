@@ -11,6 +11,7 @@
     "@types/node": "^12.12.35",
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
+    "cross-env": "^7.0.2",
     "express": "^4.17.1",
     "pug": "^2.0.4",
     "react": "^16.13.1",
@@ -23,7 +24,7 @@
   "scripts": {
     "start": "react-scripts start",
     "server-dev": "cross-env NODE_ENV=development nodemon server/server.ts",
-    "dev": "concurrently \"npm start\" \"npm server-dev\"",
+    "dev": "concurrently \"npm start\" \"npm run server-dev\"",
     "build": "react-scripts build",
     "server": "cross-env NODE_ENV=production ts-node server/server.ts",
     "test": "react-scripts test",
@@ -45,6 +46,7 @@
     ]
   },
   "devDependencies": {
-    "concurrently": "^5.1.0"
+    "concurrently": "^5.1.0",
+    "eslint": "^6.8.0"
   }
 }
