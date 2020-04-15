@@ -1,5 +1,6 @@
 # custom
 build/
+server/_secrets
 
 # Logs
 logs

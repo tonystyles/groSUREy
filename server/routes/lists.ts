@@ -1,4 +1,5 @@
 import express from "express";
+import listsController from "../controllers/listsController";
 
 const itemsRouter = express.Router();
 
