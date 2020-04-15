@@ -1,6 +1,6 @@
 # custom
 build/
-server/_secrets
+server/_secrets.ts
 
 # Logs
 logs

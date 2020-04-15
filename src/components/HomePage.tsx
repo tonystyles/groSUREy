@@ -12,7 +12,6 @@ import {
 import LoginPage from './LoginPage';
 
 interface PropsInterface {
-  children: any;
   loginState: boolean;
   setLoginState: React.Dispatch<React.SetStateAction<boolean>>;
   username: string;
