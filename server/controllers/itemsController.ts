@@ -1,11 +1,6 @@
 import { Handler } from "express";
 import db from "../model/model";
 
-type ItemsController = {
-  addItemType: Handler;
-  getListItems: Handler;
-};
-
 const addItemType: Handler = (req, res, next) => {
   const query =
     "INSERT INTO items COLUMNS (name, max_price, brand, notes, group_id) VALUSE";
@@ -25,7 +20,7 @@ const getListItems: Handler = (req, res, next) => {
 };
 
 // intialize controller object
-const itemsController: ItemsController = {
+const itemsController = {
   addItemType,
   getListItems,
 };

@@ -1,12 +1,6 @@
 import { Handler } from "express";
 import db from "../model/model";
 
-type GroupsController = {
-  createGroup: Handler;
-  joinGroup: Handler;
-  getGroups: Handler;
-};
-
 const createGroup: Handler = (req, res, next) => {
   const query = `
     INSERT INTO groups
@@ -55,7 +49,7 @@ const getGroups: Handler = (req, res, next) => {
     .catch((e) => next(e));
 };
 
-const groupsController: GroupsController = {
+const groupsController = {
   createGroup,
   joinGroup,
   getGroups,
