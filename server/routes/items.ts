@@ -1,4 +1,5 @@
 import express from "express";
+import itemsController from "../controllers/itemsController";
 
 const itemsRouter = express.Router();
 
