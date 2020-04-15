@@ -16,7 +16,7 @@ userRouter.post(
   }
 );
 
-userRouter.get("/logout", loginController.logoutUser, (req, res) => {
+userRouter.post("/logout", loginController.logoutUser, (req, res) => {
   res.sendStatus(200);
 });
 
