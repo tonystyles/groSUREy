@@ -6,6 +6,7 @@
       "dom.iterable",
       "esnext"
     ],
+    "sourceMap": true,
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -22,6 +23,9 @@
   },
   "include": [
     "src",
-    "server"
+    "server/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }
