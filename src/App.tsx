@@ -1,25 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import 'typeface-roboto';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import LoginPage from './components/LoginPage';
+import HomePage from './components/HomePage';
+import ItemList from './components/ItemList'
 
 function App() {
+  const [loginState, setLoginState] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+
+  const loginProps = {
+    loginState,
+    setLoginState,
+    username,
+    setUsername,
+    password,
+    setPassword
+  };
+
+  const message = <h1>Welcome {username}!</h1>;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div>
+        <Switch>
+          <Route exact path="/">
+            <HomePage {...loginProps}>{message}</HomePage>
+          </Route>
+          <Route path="/login">
+            <LoginPage {...loginProps}>
+              <p>Please log in or go away!</p>
+            </LoginPage>
+          </Route>
+          <Route path="/list/:groupID">
+            <ItemList />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
