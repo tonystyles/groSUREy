@@ -20,7 +20,17 @@ interface PropsInterface {
   setPassword: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const useStyles = makeStyles({
+interface LoginPropsInterface {
+  setLoginState: React.Dispatch<React.SetStateAction<boolean>>;
+  username: string;
+  setUsername: React.Dispatch<React.SetStateAction<string>>;
+  password: string;
+  setPassword: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const useStyles: (
+  props?: any
+) => Record<'list' | 'fullList' | 'group', string> = makeStyles({
   list: {
     width: 250
   },
@@ -40,12 +50,19 @@ const HomePage: React.FC<PropsInterface> = ({
   password,
   setPassword
 }) => {
-  const classes = useStyles();
-  const [drawerOut, setDrawerOut] = useState(false);
+  const classes: Record<'list' | 'fullList' | 'group', string> = useStyles();
+  const [drawerOut, setDrawerOut]: [
+    boolean,
+    React.Dispatch<React.SetStateAction<boolean>>
+  ] = useState<boolean>(false);
 
-  const toggleDrawer = (open: boolean) => (
+  const toggleDrawer: (
+    open: boolean
+  ) => (
+    event: React.KeyboardEvent<Element> | React.MouseEvent<Element, MouseEvent>
+  ) => void = (open: boolean) => (
     event: React.KeyboardEvent | React.MouseEvent
-  ) => {
+  ): void => {
     if (
       event.type === 'keydown' &&
       ((event as React.KeyboardEvent).key === 'Tab' ||
@@ -57,7 +74,7 @@ const HomePage: React.FC<PropsInterface> = ({
     setDrawerOut(open);
   };
 
-  const list = () => (
+  const list: () => JSX.Element = (): JSX.Element => (
     <div
       className={classes.list}
       role="presentation"
@@ -79,7 +96,7 @@ const HomePage: React.FC<PropsInterface> = ({
     </div>
   );
 
-  const loginProps = {
+  const loginProps: LoginPropsInterface = {
     setLoginState,
     username,
     setUsername,

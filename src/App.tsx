@@ -1,16 +1,35 @@
 import 'typeface-roboto';
-import React, { useState } from 'react';
+import * as React from 'react';
+import { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
 import HomePage from './components/HomePage';
-import ItemList from './components/ItemList'
+import ItemList from './components/ItemList';
 
-function App() {
-  const [loginState, setLoginState] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+interface LoginPropsInterface {
+  loginState: boolean;
+  setLoginState: React.Dispatch<React.SetStateAction<boolean>>;
+  username: string;
+  setUsername: React.Dispatch<React.SetStateAction<string>>;
+  password: string;
+  setPassword: React.Dispatch<React.SetStateAction<string>>;
+}
 
-  const loginProps = {
+const App: React.FC<LoginPropsInterface> = (): JSX.Element => {
+  const [loginState, setLoginState]: [
+    boolean,
+    React.Dispatch<React.SetStateAction<boolean>>
+  ] = useState<boolean>(false);
+  const [username, setUsername]: [
+    string,
+    React.Dispatch<React.SetStateAction<string>>
+  ] = useState<string>('');
+  const [password, setPassword]: [
+    string,
+    React.Dispatch<React.SetStateAction<string>>
+  ] = useState<string>('');
+
+  const loginProps: LoginPropsInterface = {
     loginState,
     setLoginState,
     username,
@@ -19,7 +38,7 @@ function App() {
     setPassword
   };
 
-  const message = <h1>Welcome {username}!</h1>;
+  const message: JSX.Element = <h1>Welcome {username}!</h1>;
 
   return (
     <Router>
@@ -40,6 +59,6 @@ function App() {
       </div>
     </Router>
   );
-}
+};
 
 export default App;
