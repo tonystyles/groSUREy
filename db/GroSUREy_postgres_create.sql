@@ -8,7 +8,7 @@ CREATE TABLE "Users"
   "alias" varchar(255),
   "email" varchar(255) NOT NULL,
   CONSTRAINT "Users_pk" PRIMARY KEY ("_id")
-)
+);
 
 
 
@@ -19,7 +19,7 @@ CREATE TABLE "Groups"
   "alias" varchar(255),
   "picture" bigint,
   CONSTRAINT "Groups_pk" PRIMARY KEY ("_id")
-)
+);
 
 
 
@@ -29,7 +29,7 @@ CREATE TABLE "UserGroups"
   "user_id" bigint NOT NULL,
   "group_id" bigint NOT NULL,
   CONSTRAINT "UserGroups_pk" PRIMARY KEY ("_id")
-)
+);
 
 
 
@@ -39,7 +39,7 @@ CREATE TABLE "ShoppingList"
   "group_id" bigint NOT NULL,
   "name" varchar(255) NOT NULL,
   CONSTRAINT "ShoppingList_pk" PRIMARY KEY ("_id")
-)
+);
 
 
 
@@ -53,8 +53,7 @@ CREATE TABLE "ItemType"
   "group_id" bigint NOT NULL,
   "picture" bigint,
   CONSTRAINT "ItemType_pk" PRIMARY KEY ("_id")
-)
-
+);
 
 
 CREATE TABLE "Item"
@@ -65,7 +64,7 @@ CREATE TABLE "Item"
   "notes" varchar,
   "list_id" bigint NOT NULL,
   CONSTRAINT "Item_pk" PRIMARY KEY ("_id")
-)
+);
 
 
 
