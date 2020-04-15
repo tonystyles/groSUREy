@@ -1,11 +1,19 @@
 import express from "express";
-import userController from "../controllers/userController";
 
 const userRouter = express.Router();
 
 // import controllers
 import loginController from "../controllers/loginController";
-import userContorller from "../controllers/userController";
+import userController from "../controllers/userController";
+
+userRouter.get(
+  "/",
+  loginController.isLoggedIn,
+  userController.getUserData,
+  (req, res) => {
+    res.json(res.locals);
+  }
+);
 
 userRouter.post(
   "/login",
@@ -23,7 +31,7 @@ userRouter.post("/logout", loginController.logoutUser, (req, res) => {
 userRouter.post(
   "/signup",
   loginController.hashPassword,
-  userContorller.createUser,
+  userController.createUser,
   loginController.loginUser,
   (req, res) => {
     res.status(200).json();

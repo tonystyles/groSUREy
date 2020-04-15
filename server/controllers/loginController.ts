@@ -78,17 +78,18 @@ const isLoggedIn: Handler = (req, res, next) => {
   `;
 
   const values = [req.cookies.ssid, req.cookies.userId];
+  console.log(values);
 
   db.query(query, values)
     .then((session) => {
       // if user is found
       if (session.rows.length) {
         res.locals.isLoggedIn = true;
+        return next();
       } else {
         // user is not found
-        res.locals.isLoggedIn = false;
+        res.json({ isLoggedIn: false });
       }
-      return next();
     })
     .catch((e) => next(e));
 };
