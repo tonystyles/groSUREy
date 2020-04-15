@@ -1,4 +1,4 @@
-CREATE TABLE "Users"
+CREATE TABLE "users"
 (
   "_id" serial NOT NULL,
   "username" varchar(255) NOT NULL UNIQUE,
@@ -7,75 +7,86 @@ CREATE TABLE "Users"
   "full_name" varchar(255) NOT NULL,
   "alias" varchar(255),
   "email" varchar(255) NOT NULL,
-  CONSTRAINT "Users_pk" PRIMARY KEY ("_id")
+  CONSTRAINT "users_pk" PRIMARY KEY ("_id")
 );
 
+CREATE TABLE "sessions"
+(
+  "_id" serial NOT NULL,
+  "user_id" bigint,
+  CONSTRAINT "sessions_pk" PRIMARY KEY ("_id")
+);
 
-
-CREATE TABLE "Groups"
+CREATE TABLE "groups"
 (
   "_id" serial NOT NULL,
   "groupname" varchar(255) NOT NULL UNIQUE,
   "alias" varchar(255),
   "picture" bigint,
-  CONSTRAINT "Groups_pk" PRIMARY KEY ("_id")
+  CONSTRAINT "groups_pk" PRIMARY KEY ("_id")
 );
 
 
 
-CREATE TABLE "UserGroups"
+CREATE TABLE "user_groups"
 (
   "_id" serial NOT NULL,
   "user_id" bigint NOT NULL,
   "group_id" bigint NOT NULL,
-  CONSTRAINT "UserGroups_pk" PRIMARY KEY ("_id")
+  CONSTRAINT "user_groups_pk" PRIMARY KEY ("_id")
 );
 
 
 
-CREATE TABLE "ShoppingList"
+CREATE TABLE "lists"
 (
   "_id" serial NOT NULL,
   "group_id" bigint NOT NULL,
   "name" varchar(255) NOT NULL,
-  CONSTRAINT "ShoppingList_pk" PRIMARY KEY ("_id")
+  CONSTRAINT "lists_pk" PRIMARY KEY ("_id")
 );
 
 
+-- removed, stretch feature
+-- CREATE TABLE "item_types"
+-- (
+--   "_id" serial NOT NULL,
+--   "name" varchar(255) NOT NULL,
+--   "max_price" bigint,
+--   "brand" varchar(255),
+--   "notes" varchar,
+--   "group_id" bigint NOT NULL,
+--   "picture" bigint,
+--   CONSTRAINT "item_types_pk" PRIMARY KEY ("_id")
+-- );
 
-CREATE TABLE "ItemType"
-(
-  "_id" serial NOT NULL,
-  "name" varchar(255) NOT NULL,
-  "max_price" bigint,
-  "brand" varchar(255),
-  "notes" varchar,
-  "group_id" bigint NOT NULL,
-  CONSTRAINT "ItemType_pk" PRIMARY KEY ("_id")
-);
 
-
-CREATE TABLE "Item"
+CREATE TABLE "items"
 (
   "_id" serial NOT NULL,
   "type_id" bigint NOT NULL,
   "quantity" bigint NOT NULL,
+  "max_price" bigint,
+  "brand" varchar(255),
   "notes" varchar,
+  "checked" boolean NOT NULL,
+  "picture" varchar(255),
   "list_id" bigint NOT NULL,
-  CONSTRAINT "Item_pk" PRIMARY KEY ("_id")
+  CONSTRAINT "items_pk" PRIMARY KEY ("_id")
 );
 
 
 
 
+ALTER TABLE "sessions" ADD CONSTRAINT "sessions_fk0" FOREIGN KEY ("user_id") REFERENCES "users"("_id");
 
-ALTER TABLE "UserGroups" ADD CONSTRAINT "UserGroups_fk0" FOREIGN KEY ("user_id") REFERENCES "Users"("_id");
-ALTER TABLE "UserGroups" ADD CONSTRAINT "UserGroups_fk1" FOREIGN KEY ("group_id") REFERENCES "Groups"("_id");
+ALTER TABLE "user_groups" ADD CONSTRAINT "user_groups_fk0" FOREIGN KEY ("user_id") REFERENCES "users"("_id");
+ALTER TABLE "user_groups" ADD CONSTRAINT "user_groups_fk1" FOREIGN KEY ("group_id") REFERENCES "groups"("_id");
 
-ALTER TABLE "ShoppingList" ADD CONSTRAINT "ShoppingList_fk0" FOREIGN KEY ("group_id") REFERENCES "Groups"("_id");
+ALTER TABLE "lists" ADD CONSTRAINT "lists_fk0" FOREIGN KEY ("group_id") REFERENCES "groups"("_id");
 
-ALTER TABLE "ItemType" ADD CONSTRAINT "ItemType_fk0" FOREIGN KEY ("group_id") REFERENCES "Groups"("_id");
+ALTER TABLE "item_types" ADD CONSTRAINT "item_types_fk0" FOREIGN KEY ("group_id") REFERENCES "groups"("_id");
 
-ALTER TABLE "Item" ADD CONSTRAINT "Item_fk0" FOREIGN KEY ("type_id") REFERENCES "ItemType"("_id");
-ALTER TABLE "Item" ADD CONSTRAINT "Item_fk1" FOREIGN KEY ("list_id") REFERENCES "ShoppingList"("_id");
+-- ALTER TABLE "items" ADD CONSTRAINT "items_fk0" FOREIGN KEY ("type_id") REFERENCES "item_types"("_id");
+ALTER TABLE "items" ADD CONSTRAINT "items_fk1" FOREIGN KEY ("list_id") REFERENCES "lists"("_id");
 
