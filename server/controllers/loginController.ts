@@ -1,104 +1,121 @@
-import jwt from "jsonwebtoken";
-import axios from "axios";
 import { Handler } from "express";
 
-// import secrets
-import githubSecret from "../_secrets/githubSecret";
-import jwtSecret from "../_secrets/jwtSecret";
+// bcrypt
+const SALT_WORK_FACTOR = 10;
+import bcrypt from "bcryptjs";
 
 // import access to databse
 import db from "../model/model";
+import { resolve } from "dns";
 
-/**
- *  JWT LOGIN
- */
-const loginUser: Handler = (req, res, next) => {
-  try {
-    // create payload
-    const payload = { id: res.locals.userData.id };
-    // create jwt token
-    const token = jwt.sign(payload, jwtSecret.secret);
-    res.cookie("jwt_token", token, { httpOnly: true });
+// HASH THE USERS PASSWORD WITH BCRYPT
+const hashPassword: Handler = (req, res, next) => {
+  bcrypt.hash(req.body.password, SALT_WORK_FACTOR, (err, hash) => {
+    if (err) return next(err);
+    req.body.password = hash;
     return next();
-  } catch (err) {
-    return next({
-      log: `Error in middleware jwtsController.loginUser: ${err}`,
-    });
-  }
+  });
 };
 
+// VERIFY A USER'S CREDENTIALS
+const verifyCredentials: Handler = (req, res, next) => {
+  const query = `
+    SELECT *
+    FROM users
+    WHERE username = $1;
+  `;
+  const values = [req.body.username.toLowerCase()];
+
+  db.query(query, values)
+    .then((user) => {
+      // if user is found
+      if (user.rows.length) {
+        bcrypt.compare(
+          req.body.password,
+          user.rows[0].password,
+          (err, success) => {
+            res.locals.verifed = true;
+            res.locals.userId = user.rows[0]._id;
+            return next();
+          }
+        );
+      } else {
+        // user is not found
+        res.locals.verified = false;
+        return res.json({ verified: false });
+      }
+    })
+    .catch((e) => next(e));
+};
+
+// START SESSION
+const loginUser: Handler = (req, res, next) => {
+  const query = `
+    INSERT INTO sessions
+    (user_id)
+    VALUES ($1)
+    RETURNING _id;
+  `;
+  const values = [res.locals.userId];
+
+  db.query(query, values)
+    .then((session) => {
+      res.locals.isLoggedIn = true;
+      res.cookie("ssid", session.rows[0]._id, { httpOnly: true });
+      res.cookie("userId", res.locals.userId, { httpOnly: true });
+      return next();
+    })
+    .catch((e) => next(e));
+};
+
+// VERIFY USER IS IN SESSION
 const isLoggedIn: Handler = (req, res, next) => {
-  try {
-    jwt.verify(
-      req.cookies.jwt_token,
-      jwtSecret.secret,
-      (err: any, data: any) => {
-        // if not logged in, immediately report to client
-        if (err) return res.status(200).json({ isLoggedIn: false });
-        res.locals = { isLoggedIn: true };
-        return next();
-      }
-    );
-  } catch (err) {
-    return next({
-      log: `Error in middleware jwtsController.isLoggedIn: ${err}`,
-    });
-  }
-};
+  const query = `
+    SELECT *
+    FROM sessions
+    WHERE _id = $1
+    AND user_id = $2;
+  `;
 
-/**
- *  GITHUB OAUTH
- */
-const githubToken: Handler = (req, res, next) => {
-  axios
-    .post(
-      "https://github.com/login/oauth/access_token",
-      {
-        client_id: githubSecret.clientId,
-        client_secret: githubSecret.clientSecret,
-        // temporary code from github based on user login
-        code: req.query.code,
-      },
-      {
-        headers: {
-          accept: "application/json",
-        },
+  const values = [req.cookies.ssid, req.cookies.userId];
+
+  db.query(query, values)
+    .then((session) => {
+      // if user is found
+      if (session.rows.length) {
+        res.locals.isLoggedIn = true;
+      } else {
+        // user is not found
+        res.locals.isLoggedIn = false;
       }
-    )
-    .then((githubRes) => {
-      res.locals.token = githubRes.data.access_token;
       return next();
     })
-    .catch((err) =>
-      next({
-        log: `Error in middleware loginController.token: ${err}`,
-      })
-    );
+    .catch((e) => next(e));
 };
 
-// Uses token to retrieve information about current user
-const githubUserData: Handler = (req, res, next) => {
-  axios
-    .get("https://api.github.com/user", {
-      headers: {
-        Accept: "application/vnd.github.v3+json",
-        Authorization: "token " + res.locals.token,
-      },
-    })
-    .then(({ data: { name, avatar_url, email } }) => {
-      res.locals.userData = { full_name: name, picture: avatar_url, email };
+const logoutUser: Handler = (req, res, next) => {
+  const query = `
+    DELETE FROM sessions
+    WHERE _id = $1
+    AND user_id = $2;
+  `;
+
+  const values = [req.cookies.ssid, req.cookies.userId];
+
+  db.query(query, values)
+    .then((success) => {
+      res.locals.isLoggedIn = false;
       return next();
     })
-    .catch((err) => ({
-      log: `Error in middleware loginController.userData axios to github: ${err}`,
-    }));
+    .catch((e) => next(e));
 };
 
 const loginController = {
+  hashPassword,
+  verifyCredentials,
   loginUser,
   isLoggedIn,
-  githubToken,
-  githubUserData,
+  logoutUser,
 };
 
 export default loginController;

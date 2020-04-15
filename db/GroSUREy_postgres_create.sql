@@ -10,7 +10,12 @@ CREATE TABLE "users"
   CONSTRAINT "users_pk" PRIMARY KEY ("_id")
 );
 
-
+CREATE TABLE "sessions"
+(
+  "_id" serial NOT NULL,
+  "user_id" bigint,
+  CONSTRAINT "sessions_pk" PRIMARY KEY ("_id")
+);
 
 CREATE TABLE "groups"
 (
@@ -73,6 +78,7 @@ CREATE TABLE "items"
 
 
 
+ALTER TABLE "sessions" ADD CONSTRAINT "sessions_fk0" FOREIGN KEY ("user_id") REFERENCES "users"("_id");
 
 ALTER TABLE "user_groups" ADD CONSTRAINT "user_groups_fk0" FOREIGN KEY ("user_id") REFERENCES "users"("_id");
 ALTER TABLE "user_groups" ADD CONSTRAINT "user_groups_fk1" FOREIGN KEY ("group_id") REFERENCES "groups"("_id");
