@@ -12,6 +12,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
+    "noImplicitAny": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
     "moduleResolution": "node",
@@ -23,9 +24,10 @@
   },
   "include": [
     "src",
-    "server/*.ts"
+    "server/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "db"
   ]
 }

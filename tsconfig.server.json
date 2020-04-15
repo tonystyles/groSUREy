@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+<<<<<<< HEAD
     "target": "es6",
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -16,3 +17,15 @@
     "server"
   ]
 }
+=======
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "strict": true,
+    "noEmit": true,
+    "target": "es6",
+    "esModuleInterop": true,
+    "moduleResolution": "node"
+  },
+  "include": ["server/**/*.ts"]
+}
+>>>>>>> b2dbc9fc6207311d456cfc9151645e7f069e1370
