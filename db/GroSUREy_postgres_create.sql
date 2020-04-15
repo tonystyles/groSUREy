@@ -64,7 +64,7 @@ CREATE TABLE "items"
   "max_price" bigint,
   "brand" varchar(255),
   "notes" varchar,
-  "checked" boolean,
+  "checked" boolean NOT NULL,
   "picture" varchar(255),
   "list_id" bigint NOT NULL,
   CONSTRAINT "items_pk" PRIMARY KEY ("_id")

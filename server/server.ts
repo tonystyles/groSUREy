@@ -10,6 +10,7 @@ import loginRouter from "./routes/login";
 import groupsRouter from "./routes/groups";
 import listsRouter from "./routes/lists";
 import itemsRouter from "./routes/items";
+import userRouter from "./routes/user";
 
 /**
  * PARSE THE BODY OF REQUEST
@@ -28,6 +29,7 @@ app.use("/login", loginRouter);
 app.use("/groups", groupsRouter);
 app.use("/lists", listsRouter);
 app.use("/items", itemsRouter);
+app.use("/user", userRouter);
 
 // serve html when in production
 if (!isDev) {
