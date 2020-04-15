@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import cookieParser from "cookie-parser";
 
 const app = express();
 const isDev = process.env.NODE_ENV === "development";
@@ -13,9 +14,10 @@ import itemsRouter from "./routes/items";
 import userRouter from "./routes/user";
 
 /**
- * PARSE THE BODY OF REQUEST
+ * PARSE THE BODY OF REQUEST AND COOKIES
  */
 app.use(express.json());
+app.use(cookieParser());
 
 /**
  * HANDLE REQUESTS FOR STATIC FILES
