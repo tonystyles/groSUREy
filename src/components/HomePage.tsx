@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -10,22 +9,11 @@ import {
   Drawer
 } from '@material-ui/core';
 import LoginPage from './LoginPage';
+import { AppPropsInterface } from '../utils/interfaces';
 
-interface PropsInterface {
-  loginState: boolean;
-  setLoginState: React.Dispatch<React.SetStateAction<boolean>>;
-  username: string;
-  setUsername: React.Dispatch<React.SetStateAction<string>>;
-  password: string;
-  setPassword: React.Dispatch<React.SetStateAction<string>>;
-}
-
-interface LoginPropsInterface {
-  setLoginState: React.Dispatch<React.SetStateAction<boolean>>;
-  username: string;
-  setUsername: React.Dispatch<React.SetStateAction<string>>;
-  password: string;
-  setPassword: React.Dispatch<React.SetStateAction<string>>;
+interface DrawerInterface extends AppPropsInterface {
+  drawerOut: boolean;
+  setDrawerOut: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const useStyles: (
@@ -42,19 +30,17 @@ const useStyles: (
   }
 });
 
-const HomePage: React.FC<PropsInterface> = ({
+const HomePage: React.FC<DrawerInterface> = ({
   loginState,
   setLoginState,
   username,
   setUsername,
   password,
-  setPassword
+  setPassword,
+  drawerOut,
+  setDrawerOut
 }) => {
   const classes: Record<'list' | 'fullList' | 'group', string> = useStyles();
-  const [drawerOut, setDrawerOut]: [
-    boolean,
-    React.Dispatch<React.SetStateAction<boolean>>
-  ] = useState<boolean>(false);
 
   const toggleDrawer: (
     open: boolean
@@ -96,7 +82,8 @@ const HomePage: React.FC<PropsInterface> = ({
     </div>
   );
 
-  const loginProps: LoginPropsInterface = {
+  const loginProps: AppPropsInterface = {
+    loginState,
     setLoginState,
     username,
     setUsername,

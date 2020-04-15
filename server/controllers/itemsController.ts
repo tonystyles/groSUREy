@@ -8,7 +8,7 @@ type ItemsController = {
 
 const addItemType: Handler = (req, res, next) => {
   const query =
-    "INSERT INTO items COLUMNS (name, max_price, brand, notes, group_id) VALUSE";
+    "INSERT INTO items COLUMNS (name, max_price, brand, notes, group_id) VALUE";
 };
 
 const getListItems: Handler = (req, res, next) => {

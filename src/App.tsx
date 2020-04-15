@@ -5,17 +5,9 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
 import HomePage from './components/HomePage';
 import ItemList from './components/ItemList';
+import {AppPropsInterface} from './utils/interfaces'
 
-interface LoginPropsInterface {
-  loginState: boolean;
-  setLoginState: React.Dispatch<React.SetStateAction<boolean>>;
-  username: string;
-  setUsername: React.Dispatch<React.SetStateAction<string>>;
-  password: string;
-  setPassword: React.Dispatch<React.SetStateAction<string>>;
-}
-
-const App: React.FC<LoginPropsInterface> = (): JSX.Element => {
+const App: React.FC= (): JSX.Element => {
   const [loginState, setLoginState]: [
     boolean,
     React.Dispatch<React.SetStateAction<boolean>>
@@ -28,8 +20,12 @@ const App: React.FC<LoginPropsInterface> = (): JSX.Element => {
     string,
     React.Dispatch<React.SetStateAction<string>>
   ] = useState<string>('');
+  const [drawerOut, setDrawerOut]: [
+    boolean,
+    React.Dispatch<React.SetStateAction<boolean>>
+  ] = useState<boolean>(false);
 
-  const loginProps: LoginPropsInterface = {
+  const loginProps: AppPropsInterface = {
     loginState,
     setLoginState,
     username,
@@ -38,6 +34,11 @@ const App: React.FC<LoginPropsInterface> = (): JSX.Element => {
     setPassword
   };
 
+  const drawerProps: any = {
+    drawerOut,
+    setDrawerOut
+  }
+
   const message: JSX.Element = <h1>Welcome {username}!</h1>;
 
   return (
@@ -45,7 +46,7 @@ const App: React.FC<LoginPropsInterface> = (): JSX.Element => {
       <div>
         <Switch>
           <Route exact path="/">
-            <HomePage {...loginProps}>{message}</HomePage>
+            <HomePage {...loginProps} {...drawerProps}>{message}</HomePage>
           </Route>
           <Route path="/login">
             <LoginPage {...loginProps}>
@@ -53,7 +54,7 @@ const App: React.FC<LoginPropsInterface> = (): JSX.Element => {
             </LoginPage>
           </Route>
           <Route path="/list/:groupID">
-            <ItemList />
+            <ItemList {...loginProps} {...drawerProps} />
           </Route>
         </Switch>
       </div>

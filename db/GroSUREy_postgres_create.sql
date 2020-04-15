@@ -51,7 +51,6 @@ CREATE TABLE "ItemType"
   "brand" varchar(255),
   "notes" varchar,
   "group_id" bigint NOT NULL,
-  "picture" bigint,
   CONSTRAINT "ItemType_pk" PRIMARY KEY ("_id")
 );
 
