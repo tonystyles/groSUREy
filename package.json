@@ -11,6 +11,7 @@
     "@types/node": "^12.12.35",
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
+    "cross-env": "^7.0.2",
     "express": "^4.17.1",
     "pug": "^2.0.4",
     "react": "^16.13.1",
@@ -22,8 +23,10 @@
   "proxy": "http://localhost:3001",
   "scripts": {
     "start": "react-scripts start",
-    "dev": "nodemon server/server.ts",
+    "server-dev": "cross-env NODE_ENV=development nodemon server/server.ts",
+    "dev": "concurrently \"npm start\" \"npm run server-dev\"",
     "build": "react-scripts build",
+    "server": "cross-env NODE_ENV=production ts-node -P tsconfig.server.json server/server.ts",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -41,5 +44,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "concurrently": "^5.1.0",
+    "eslint": "^6.8.0"
   }
 }
