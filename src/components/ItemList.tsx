@@ -22,7 +22,7 @@ import {
 import { AppPropsInterface } from '../utils/interfaces';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import NewItem from './newItem';
+import NewItem from './NewItem';
 
 interface DrawerInterface extends AppPropsInterface {
   drawerOut: boolean;
@@ -93,20 +93,20 @@ const ItemList: React.FC<DrawerInterface> = ({
   const toggleDrawer: (
     open: boolean
   ) => (
-    event: React.KeyboardEvent<Element> | React.MouseEvent<Element, MouseEvent>
-  ) => void = (open: boolean) => (
-    event: React.KeyboardEvent | React.MouseEvent
-  ): void => {
-    if (
-      event.type === 'keydown' &&
-      ((event as React.KeyboardEvent).key === 'Tab' ||
-        (event as React.KeyboardEvent).key === 'Shift')
-    ) {
-      return;
-    }
+      event: React.KeyboardEvent<Element> | React.MouseEvent<Element, MouseEvent>
+    ) => void = (open: boolean) => (
+      event: React.KeyboardEvent | React.MouseEvent
+    ): void => {
+      if (
+        event.type === 'keydown' &&
+        ((event as React.KeyboardEvent).key === 'Tab' ||
+          (event as React.KeyboardEvent).key === 'Shift')
+      ) {
+        return;
+      }
 
-    setDrawerOut(open);
-  };
+      setDrawerOut(open);
+    };
 
   const list: () => JSX.Element = (): JSX.Element => (
     <div

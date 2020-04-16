@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { TextField } from '@material-ui/core';
 
-const newItem: React.FC = (): JSX.Element => {
+const NewItem: React.FC = (): JSX.Element => {
 
   return (
     <div>
@@ -19,4 +18,4 @@ const newItem: React.FC = (): JSX.Element => {
   )
 }
 
-export default newItem;
+export default NewItem;
