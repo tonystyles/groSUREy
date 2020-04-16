@@ -64,7 +64,7 @@ CREATE TABLE "lists"
 CREATE TABLE "items"
 (
   "_id" serial NOT NULL,
-  "type_id" bigint NOT NULL,
+  "name" varchar(255) NOT NULL,
   "quantity" bigint NOT NULL,
   "max_price" bigint,
   "brand" varchar(255),
