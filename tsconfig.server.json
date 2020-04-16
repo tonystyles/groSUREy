@@ -8,5 +8,7 @@
     "esModuleInterop": true,
     "moduleResolution": "node"
   },
-  "include": ["server/**/*.ts"]
+  "include": [
+    "server/**/*.ts"
+  ]
 }
