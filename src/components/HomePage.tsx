@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -10,6 +11,7 @@ import {
 } from '@material-ui/core';
 import LoginPage from './LoginPage';
 import { AppPropsInterface } from '../utils/interfaces';
+import NewGroup from './NewGroup';
 
 interface DrawerInterface extends AppPropsInterface {
   drawerOut: boolean;
@@ -40,46 +42,53 @@ const HomePage: React.FC<DrawerInterface> = ({
   drawerOut,
   setDrawerOut
 }) => {
+  const [openNewGroup, setOpenNewGroup]: [boolean,
+    React.Dispatch<React.SetStateAction<boolean>>
+  ] = useState<boolean>(false);
+
   const classes: Record<'list' | 'fullList' | 'group', string> = useStyles();
 
   const logout = async () => {
-      try {
-        const response = await fetch('/user/logout', {
-          method: 'POST',
-          mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-        const json = await response.json();
-        if (!json.isLoggedIn) {
-          setLoginState(false);
-          console.log('success!');
+    try {
+      const response = await fetch('/user/logout', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json'
         }
-      } catch (error) {
-        console.log('Request to sever failed');
+      });
+      const json = await response.json();
+      if (!json.isLoggedIn) {
+        setLoginState(false);
+        console.log('success!');
       }
+    } catch (error) {
+      console.log('Request to sever failed');
+    }
   }
-  
+
 
   const toggleDrawer: (
     open: boolean
   ) => (
-    event: React.KeyboardEvent<Element> | React.MouseEvent<Element, MouseEvent>
-  ) => void = (open: boolean) => (
-    event: React.KeyboardEvent | React.MouseEvent
-  ): void => {
-    if (
-      event.type === 'keydown' &&
-      ((event as React.KeyboardEvent).key === 'Tab' ||
-        (event as React.KeyboardEvent).key === 'Shift')
-    ) {
-      return;
-    }
+      event: React.KeyboardEvent<Element> | React.MouseEvent<Element, MouseEvent>
+    ) => void = (open: boolean) => (
+      event: React.KeyboardEvent | React.MouseEvent
+    ): void => {
+      if (
+        event.type === 'keydown' &&
+        ((event as React.KeyboardEvent).key === 'Tab' ||
+          (event as React.KeyboardEvent).key === 'Shift')
+      ) {
+        return;
+      }
 
-    setDrawerOut(open);
+      setDrawerOut(open);
+    };
+
+  const handleNewGroup: () => void = (): void => {
+    setOpenNewGroup(!openNewGroup);
   };
-
 
   const list: () => JSX.Element = (): JSX.Element => (
     <div
@@ -125,13 +134,16 @@ const HomePage: React.FC<DrawerInterface> = ({
             onClose={toggleDrawer(false)}
           >
             {list()}
+            <Button onClick={handleNewGroup}>Create a new group
+            </Button>
+            {openNewGroup ? <NewGroup ></NewGroup> : <p></p>}
           </Drawer>
         </div>
       ) : (
-        <LoginPage {...loginProps}>
-          <p>Please log in!</p>
-        </LoginPage>
-      )}
+          <LoginPage {...loginProps}>
+            <p>Please log in!</p>
+          </LoginPage>
+        )}
     </>
   );
 };
