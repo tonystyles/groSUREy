@@ -4,14 +4,16 @@ import { Button, Container, FormControl, TextField } from '@material-ui/core';
 
 interface SignupPropsInt {
   children: React.ReactNode;
-  name: string;
-  setName: React.Dispatch<React.SetStateAction<string>>;
+  fullName: string;
+  setFullName: React.Dispatch<React.SetStateAction<string>>;
   username: string;
   setUsername: React.Dispatch<React.SetStateAction<string>>;
   password: string;
   setPassword: React.Dispatch<React.SetStateAction<string>>;
   email: string;
   setEmail: React.Dispatch<React.SetStateAction<string>>;
+  alias: string;
+  setAlias: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const useStyles: (
@@ -39,17 +41,36 @@ const useStyles: (
 
 const SignupPage: React.FC<SignupPropsInt> = ({
   children,
-  setName,
+  setFullName,
   setUsername,
   setPassword,
-  setEmail
+  setEmail,
+  setAlias,
+  fullName,
+  username,
+  password,
+  email,
+  alias
 }): JSX.Element => {
   const classes: Record<'button' | 'root' | 'container', string> = useStyles();
 
-  //need to change for functionality
-  // const toggleLogin: () => void = (): void => {
-  //   setLoginState(true);
-  // };
+  const signinButton: () => void = (): void => {
+    const fetchSignup = async () => {
+      try {
+        const response = await fetch('/signup', {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({fullName, username, password, email,alias})
+        });
+      } catch (error) {
+        console.log('Request to server /signup failed');
+      }
+    };
+    fetchSignup();
+  };
   return (
     <>
       <Container className={classes.container}>
@@ -58,7 +79,7 @@ const SignupPage: React.FC<SignupPropsInt> = ({
           <TextField
             id="standard-basic"
             label="Name"
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => setFullName(e.target.value)}
           />
           <TextField
             id="standard-email"
@@ -77,12 +98,16 @@ const SignupPage: React.FC<SignupPropsInt> = ({
             autoComplete="current-password"
             onChange={(e) => setPassword(e.target.value)}
           />
+          <TextField
+            id="standard-basic"
+            label="nickname"
+            onChange={(e) => setAlias(e.target.value)}
+          />
           <Button
             className={classes.button}
             variant="outlined"
             type="submit"
-            //need to add functionality here
-            // onClick={() => toggleLogin()}
+            onClick={() => signinButton()}
           >
             Sign Up Now!
           </Button>
