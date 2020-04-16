@@ -9,6 +9,20 @@
 
 ## User Api
 
+### User Data
+
+`method` GET
+`route` /user
+`returns`
+
+- **isLoggedIn**: boolean
+- **userData**:
+  - \_id: number;
+  - username: string;
+  - profile_pic: null or string (url to pic)
+  - alias: null or string
+  - email: strgin
+
 ### Login
 
 `method` POST
@@ -49,6 +63,53 @@
 - **userId**: number
 
 ## Groups Api
+
+### Get Groups of Logged In User
+
+`method` GET
+`route` /groups
+`returns` json
+
+- **isLoggedIn**: boolean;
+- **groups**: array of group objects:
+  - \_id: number;
+  - groupname: string;
+  - alias: null or string;
+  - picture: null or string;
+
+### Create Group
+
+`method` POST
+`route` /groups/create
+`body` json
+
+- **groupName**: string _must be unique_
+- **alias**: string
+
+`returns` json
+
+- **isLoggedIn**: boolean;
+- **group**: object
+  - \_id: number;
+  - groupname: string;
+  - alias: null or string;
+  - picture: null or string
+
+### join group
+
+`method` POST
+`route` /groups/join
+`body` json
+
+- **groupId**: number;
+  `returns` json
+
+- **isLoggedIn**: boolean;
+- **groups**: array of group objects:
+  - \_id: number;
+  - groupname: string;
+  - alias: null or string;
+  - picture: null or string;
 
 ## Lists Api
 
