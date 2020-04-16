@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "grosurey",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -38,11 +38,12 @@
   "scripts": {
     "start": "react-scripts start",
     "server-dev": "cross-env NODE_ENV=development nodemon server/server.ts",
-    "dev": "concurrently \"npm start\" \"npm run server-dev\"",
+    "dev": "concurrently \"tsc -w --project tsconfig.server.json\" \"nodemon ./dist/server/server.js\" \"npm start\"",
     "build": "react-scripts build",
     "server": "cross-env NODE_ENV=production ts-node -P tsconfig.server.json server/server.ts",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "transpile": "babel ./app/server/ --out-dir dist-server"
   },
   "eslintConfig": {
     "extends": "react-app"

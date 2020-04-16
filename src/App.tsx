@@ -15,7 +15,7 @@ interface LoginPropsInterface {
   setPassword: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const App: React.FC<LoginPropsInterface> = (): JSX.Element => {
+const App: React.FC = (): JSX.Element => {
   const [loginState, setLoginState]: [
     boolean,
     React.Dispatch<React.SetStateAction<boolean>>
