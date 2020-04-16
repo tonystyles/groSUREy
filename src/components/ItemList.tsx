@@ -13,7 +13,7 @@ import {
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { ExpandLess, ExpandMore, StarBorder } from '@material-ui/icons';
-import NewItem from './newItem';
+import NewItem from './NewItem';
 
 const useStyles: (
   props?: any
