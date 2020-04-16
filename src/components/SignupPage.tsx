@@ -92,4 +92,5 @@ const SignupPage: React.FC<SignupPropsInt> = ({
   );
 };
 
+
 export default SignupPage;
