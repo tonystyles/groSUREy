@@ -23,7 +23,7 @@ interface SignupPropsInterface {
 
 const App: React.FC = (): JSX.Element => {
   const [loginState, setLoginState] = useState<boolean>(false);
-  const [name, setName] = useState<string>("");
+  const [fullName, setFullName] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [drawerOut, setDrawerOut] = useState<boolean>(false);

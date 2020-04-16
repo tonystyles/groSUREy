@@ -57,7 +57,7 @@ const SignupPage: React.FC<SignupPropsInt> = ({
   const signinButton: () => void = (): void => {
     const fetchSignup = async () => {
       try {
-        const response = await fetch('/signup', {
+        const response = await fetch('/user/signup', {
           method: 'POST',
           mode: 'cors',
           headers: {
