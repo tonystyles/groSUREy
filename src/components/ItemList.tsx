@@ -11,6 +11,7 @@ import {
   Collapse
 } from '@material-ui/core';
 import { ExpandLess, ExpandMore, StarBorder } from '@material-ui/icons';
+import newItem from './newItem';
 
 const useStyles: (
   props?: any
