@@ -20,11 +20,15 @@ import {
   Settings
 } from '@material-ui/icons';
 import { AppPropsInterface } from '../utils/interfaces';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import NewItem from './newItem';
 
 interface DrawerInterface extends AppPropsInterface {
   drawerOut: boolean;
   setDrawerOut: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
 
 const useStyles: (
   props?: any
@@ -74,6 +78,10 @@ const ItemList: React.FC<DrawerInterface> = ({
     string
   > = useStyles();
   const [open, setOpen]: [
+    boolean,
+    React.Dispatch<React.SetStateAction<boolean>>
+  ] = useState<boolean>(true);
+  const [openForm, setOpenForm]: [
     boolean,
     React.Dispatch<React.SetStateAction<boolean>>
   ] = useState<boolean>(true);
@@ -143,6 +151,9 @@ const ItemList: React.FC<DrawerInterface> = ({
       </List>
     </div>
   );
+  const newItemClick: () => void = (): void => {
+    setOpenForm(!openForm);
+  }
 
   return (
     <div>
@@ -177,6 +188,15 @@ const ItemList: React.FC<DrawerInterface> = ({
             </ListItem>
           </List>
         </Collapse>
+        <ListItem button onClick={newItemClick}>
+          {openForm ? <ListItemText primary="Add new item" /> : <ListItemText primary="" />}
+          {openForm ? <Fab size="small" color="primary" aria-label="add" onClick={newItemClick}>
+            <AddIcon />
+          </Fab> : <ExpandLess />}
+          <Collapse in={!openForm} timeout="auto" unmountOnExit>
+            <NewItem></NewItem>
+          </Collapse>
+        </ListItem>
       </List>
       <Button onClick={toggleDrawer(true)}>See Groups</Button>
 
