@@ -102,7 +102,8 @@
 `body` json
 
 - **groupId**: number;
-  `returns` json
+
+`returns` json
 
 - **isLoggedIn**: boolean;
 - **groups**: array of group objects:
@@ -112,5 +113,63 @@
   - picture: null or string;
 
 ## Lists Api
+
+### get lists
+
+`method` GET
+`route` /lists
+`query` ?groupId=<groupId>
+
+- key: `listId`
+- value: number
+
+`returns` json
+
+- **lists**: array of list objects:
+  - \_id: number
+  - group_id: number
+  - name: string
+
+### create lists
+
+`method` POST
+`route` /lists
+`body` json
+
+- **groupId**: number
+- **name**: string
+
+`returns` json
+
+- **list**: list object
+  - \_id: number
+  - group_id: number
+  - name: string
+
+### update list
+
+`method` PUT
+`route` /lists
+`body` json
+
+- **listId**: number
+- **name**: string
+
+`returns` json
+
+- **list**: list object
+  - \_id: number
+  - group_id: number
+  - name: string
+
+### delete list
+
+`method` DELETE
+`route` /lists
+`body` json
+
+- **listId**: number
+
+`returns` n/a
 
 ## Items Api
