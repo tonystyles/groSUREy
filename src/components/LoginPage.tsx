@@ -3,6 +3,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Button, Container, FormControl, TextField } from '@material-ui/core';
 
 interface PropsInt {
+  loginState: boolean;
   children: React.ReactNode;
   setLoginState: React.Dispatch<React.SetStateAction<boolean>>;
   username: string;
@@ -35,15 +36,37 @@ const useStyles: (
 );
 
 const LoginPage: React.FC<PropsInt> = ({
+  loginState,
   children,
   setLoginState,
   setUsername,
-  setPassword
+  setPassword,
+  username,
+  password
 }): JSX.Element => {
   const classes: Record<'button' | 'root' | 'container', string> = useStyles();
 
   const toggleLogin: () => void = (): void => {
-    setLoginState(true);
+    const fetchLogin = async () => {
+      try {
+        const response = await fetch('/user/login', {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({username, password})
+        });
+        const json = await response.json();
+        if (json.isLoggedIn) {
+          setLoginState(true);
+          console.log('success!');
+        }
+      } catch (error) {
+        console.log('Request to sever failed');
+      }
+    };
+    fetchLogin();
   };
   return (
     <>

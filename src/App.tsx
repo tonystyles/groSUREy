@@ -1,13 +1,13 @@
 import 'typeface-roboto';
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
 import HomePage from './components/HomePage';
 import ItemList from './components/ItemList';
-import {AppPropsInterface} from './utils/interfaces'
+import { AppPropsInterface } from './utils/interfaces';
 
-const App: React.FC= (): JSX.Element => {
+const App: React.FC = (): JSX.Element => {
   const [loginState, setLoginState]: [
     boolean,
     React.Dispatch<React.SetStateAction<boolean>>
@@ -37,7 +37,26 @@ const App: React.FC= (): JSX.Element => {
   const drawerProps: any = {
     drawerOut,
     setDrawerOut
-  }
+  };
+
+  useEffect(() => {
+    const fetchLogin = async () => {
+      try {
+        const response = await fetch('/user/');
+        const json = await response.json();
+        if (json.isLoggedIn) {
+          setLoginState(true);
+          console.log('success!');
+        }
+        else {
+          setLoginState(false);
+        }
+      } catch (error) {
+        console.log('Request to sever failed');
+      }
+    };
+    if (!loginState) fetchLogin();
+  }, [loginState]);
 
   const message: JSX.Element = <h1>Welcome {username}!</h1>;
 
@@ -46,7 +65,9 @@ const App: React.FC= (): JSX.Element => {
       <div>
         <Switch>
           <Route exact path="/">
-            <HomePage {...loginProps} {...drawerProps}>{message}</HomePage>
+            <HomePage {...loginProps} {...drawerProps}>
+              {message}
+            </HomePage>
           </Route>
           <Route path="/login">
             <LoginPage {...loginProps}>
