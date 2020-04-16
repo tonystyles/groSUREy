@@ -14,6 +14,7 @@ interface Idb {
 const db: Idb = {
   query: (text, params) => {
     console.log("executing query", text);
+    console.log("values: ", params);
     return (pool.query(text, params) as unknown) as Promise<any>;
   },
 };
