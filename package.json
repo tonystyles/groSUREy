@@ -39,7 +39,7 @@
   "scripts": {
     "start": "react-scripts start",
     "server-dev": "cross-env NODE_ENV=development nodemon server/server.ts",
-    "dev": "concurrently \"tsc -w --project tsconfig.server.json\" \"nodemon ./dist/server/server.js\" \"npm start\"",
+    "dev": "concurrently \"npm run server-dev\" \"npm start\"",
     "build": "react-scripts build",
     "server": "cross-env NODE_ENV=production ts-node -P tsconfig.server.json server/server.ts",
     "test": "react-scripts test",
