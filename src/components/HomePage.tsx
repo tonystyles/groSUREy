@@ -42,6 +42,26 @@ const HomePage: React.FC<DrawerInterface> = ({
 }) => {
   const classes: Record<'list' | 'fullList' | 'group', string> = useStyles();
 
+  const logout = async () => {
+      try {
+        const response = await fetch('/user/logout', {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        const json = await response.json();
+        if (!json.isLoggedIn) {
+          setLoginState(false);
+          console.log('success!');
+        }
+      } catch (error) {
+        console.log('Request to sever failed');
+      }
+  }
+  
+
   const toggleDrawer: (
     open: boolean
   ) => (
@@ -59,6 +79,7 @@ const HomePage: React.FC<DrawerInterface> = ({
 
     setDrawerOut(open);
   };
+
 
   const list: () => JSX.Element = (): JSX.Element => (
     <div
@@ -97,7 +118,7 @@ const HomePage: React.FC<DrawerInterface> = ({
         <div>
           <h1>Welcome {username}!</h1>
           <Button onClick={toggleDrawer(true)}>See Groups</Button>
-
+          <Button onClick={() => logout()}>Log Out</Button>
           <Drawer
             anchor={'left'}
             open={drawerOut}

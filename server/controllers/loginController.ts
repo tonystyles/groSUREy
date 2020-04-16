@@ -106,9 +106,12 @@ const logoutUser: Handler = (req, res, next) => {
   db.query(query, values)
     .then((success) => {
       res.locals.isLoggedIn = false;
+      res.clearCookie("ssid");
+      res.clearCookie("userId");
       return next();
     })
     .catch((e) => next(e));
+
 };
 
 const loginController = {
