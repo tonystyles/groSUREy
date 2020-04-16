@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -10,22 +9,11 @@ import {
   Drawer
 } from '@material-ui/core';
 import LoginPage from './LoginPage';
+import { AppPropsInterface } from '../utils/interfaces';
 
-interface PropsInterface {
-  loginState: boolean;
-  setLoginState: React.Dispatch<React.SetStateAction<boolean>>;
-  username: string;
-  setUsername: React.Dispatch<React.SetStateAction<string>>;
-  password: string;
-  setPassword: React.Dispatch<React.SetStateAction<string>>;
-}
-
-interface LoginPropsInterface {
-  setLoginState: React.Dispatch<React.SetStateAction<boolean>>;
-  username: string;
-  setUsername: React.Dispatch<React.SetStateAction<string>>;
-  password: string;
-  setPassword: React.Dispatch<React.SetStateAction<string>>;
+interface DrawerInterface extends AppPropsInterface {
+  drawerOut: boolean;
+  setDrawerOut: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const useStyles: (
@@ -42,19 +30,37 @@ const useStyles: (
   }
 });
 
-const HomePage: React.FC<PropsInterface> = ({
+const HomePage: React.FC<DrawerInterface> = ({
   loginState,
   setLoginState,
   username,
   setUsername,
   password,
-  setPassword
+  setPassword,
+  drawerOut,
+  setDrawerOut
 }) => {
   const classes: Record<'list' | 'fullList' | 'group', string> = useStyles();
-  const [drawerOut, setDrawerOut]: [
-    boolean,
-    React.Dispatch<React.SetStateAction<boolean>>
-  ] = useState<boolean>(false);
+
+  const logout = async () => {
+      try {
+        const response = await fetch('/user/logout', {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        const json = await response.json();
+        if (!json.isLoggedIn) {
+          setLoginState(false);
+          console.log('success!');
+        }
+      } catch (error) {
+        console.log('Request to sever failed');
+      }
+  }
+  
 
   const toggleDrawer: (
     open: boolean
@@ -73,6 +79,7 @@ const HomePage: React.FC<PropsInterface> = ({
 
     setDrawerOut(open);
   };
+
 
   const list: () => JSX.Element = (): JSX.Element => (
     <div
@@ -96,7 +103,8 @@ const HomePage: React.FC<PropsInterface> = ({
     </div>
   );
 
-  const loginProps: LoginPropsInterface = {
+  const loginProps: AppPropsInterface = {
+    loginState,
     setLoginState,
     username,
     setUsername,
@@ -110,7 +118,7 @@ const HomePage: React.FC<PropsInterface> = ({
         <div>
           <h1>Welcome {username}!</h1>
           <Button onClick={toggleDrawer(true)}>See Groups</Button>
-
+          <Button onClick={() => logout()}>Log Out</Button>
           <Drawer
             anchor={'left'}
             open={drawerOut}

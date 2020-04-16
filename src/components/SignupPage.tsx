@@ -2,14 +2,16 @@ import * as React from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Button, Container, FormControl, TextField } from '@material-ui/core';
 
-interface PropsInt {
-  loginState: boolean;
+interface SignupPropsInt {
   children: React.ReactNode;
-  setLoginState: React.Dispatch<React.SetStateAction<boolean>>;
+  name: string;
+  setName: React.Dispatch<React.SetStateAction<string>>;
   username: string;
   setUsername: React.Dispatch<React.SetStateAction<string>>;
   password: string;
   setPassword: React.Dispatch<React.SetStateAction<string>>;
+  email: string;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const useStyles: (
@@ -35,44 +37,34 @@ const useStyles: (
   })
 );
 
-const LoginPage: React.FC<PropsInt> = ({
-  loginState,
+const SignupPage: React.FC<SignupPropsInt> = ({
   children,
-  setLoginState,
+  setName,
   setUsername,
   setPassword,
-  username,
-  password
+  setEmail
 }): JSX.Element => {
   const classes: Record<'button' | 'root' | 'container', string> = useStyles();
 
-  const toggleLogin: () => void = (): void => {
-    const fetchLogin = async () => {
-      try {
-        const response = await fetch('/user/login', {
-          method: 'POST',
-          mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({username, password})
-        });
-        const json = await response.json();
-        if (json.isLoggedIn) {
-          setLoginState(true);
-          console.log('success!');
-        }
-      } catch (error) {
-        console.log('Request to sever failed');
-      }
-    };
-    fetchLogin();
-  };
+  //need to change for functionality
+  // const toggleLogin: () => void = (): void => {
+  //   setLoginState(true);
+  // };
   return (
     <>
       <Container className={classes.container}>
         {children}
         <FormControl>
+          <TextField
+            id="standard-basic"
+            label="Name"
+            onChange={(e) => setName(e.target.value)}
+          />
+          <TextField
+            id="standard-email"
+            label="email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
           <TextField
             id="standard-basic"
             label="Username"
@@ -89,9 +81,10 @@ const LoginPage: React.FC<PropsInt> = ({
             className={classes.button}
             variant="outlined"
             type="submit"
-            onClick={() => toggleLogin()}
+            //need to add functionality here
+            // onClick={() => toggleLogin()}
           >
-            Log In
+            Sign Up Now!
           </Button>
         </FormControl>
       </Container>
@@ -99,4 +92,5 @@ const LoginPage: React.FC<PropsInt> = ({
   );
 };
 
-export default LoginPage;
+
+export default SignupPage;

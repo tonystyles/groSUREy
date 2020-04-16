@@ -1,41 +1,73 @@
-import 'typeface-roboto';
-import * as React from 'react';
-import { useState } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import LoginPage from './components/LoginPage';
-import HomePage from './components/HomePage';
-import ItemList from './components/ItemList';
+import "typeface-roboto";
+import * as React from "react";
+import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import LoginPage from "./components/LoginPage";
+import HomePage from "./components/HomePage";
+import ItemList from "./components/ItemList";
+import { AppPropsInterface } from "./utils/interfaces";
+import SignupPage from "./components/SignupPage";
 
-interface LoginPropsInterface {
-  loginState: boolean;
-  setLoginState: React.Dispatch<React.SetStateAction<boolean>>;
+interface SignupPropsInterface {
+  name: string;
+  setName: React.Dispatch<React.SetStateAction<string>>;
   username: string;
   setUsername: React.Dispatch<React.SetStateAction<string>>;
   password: string;
   setPassword: React.Dispatch<React.SetStateAction<string>>;
+  email: string;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const App: React.FC = (): JSX.Element => {
-  const [loginState, setLoginState]: [
-    boolean,
-    React.Dispatch<React.SetStateAction<boolean>>
-  ] = useState<boolean>(false);
-  const [username, setUsername]: [
-    string,
-    React.Dispatch<React.SetStateAction<string>>
-  ] = useState<string>('');
-  const [password, setPassword]: [
-    string,
-    React.Dispatch<React.SetStateAction<string>>
-  ] = useState<string>('');
+  const [loginState, setLoginState] = useState<boolean>(false);
+  const [name, setName] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [drawerOut, setDrawerOut] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>("");
 
-  const loginProps: LoginPropsInterface = {
+  const loginProps: AppPropsInterface = {
     loginState,
     setLoginState,
     username,
     setUsername,
     password,
-    setPassword
+    setPassword,
+  };
+
+  const drawerProps: any = {
+    drawerOut,
+    setDrawerOut,
+  };
+
+  useEffect(() => {
+    const fetchLogin = async () => {
+      try {
+        const response = await fetch("/user/");
+        const json = await response.json();
+        if (json.isLoggedIn) {
+          setLoginState(true);
+          console.log("success!");
+        } else {
+          setLoginState(false);
+        }
+      } catch (error) {
+        console.log("Request to sever failed");
+      }
+    };
+    if (!loginState) fetchLogin();
+  }, [loginState]);
+
+  const signupProps: SignupPropsInterface = {
+    name,
+    setName,
+    username,
+    setUsername,
+    password,
+    setPassword,
+    email,
+    setEmail,
   };
 
   const message: JSX.Element = <h1>Welcome {username}!</h1>;
@@ -45,15 +77,22 @@ const App: React.FC = (): JSX.Element => {
       <div>
         <Switch>
           <Route exact path="/">
-            <HomePage {...loginProps}>{message}</HomePage>
+            <HomePage {...loginProps} {...drawerProps}>
+              {message}
+            </HomePage>
           </Route>
           <Route path="/login">
             <LoginPage {...loginProps}>
               <p>Please log in or go away!</p>
             </LoginPage>
           </Route>
+          <Route path="/signup">
+            <SignupPage {...signupProps}>
+              <p>Sign up so your dad doesn't mess up again!</p>
+            </SignupPage>
+          </Route>
           <Route path="/list/:groupID">
-            <ItemList />
+            <ItemList {...loginProps} {...drawerProps} />
           </Route>
         </Switch>
       </div>

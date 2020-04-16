@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import {
   ListSubheader,
@@ -8,16 +8,34 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Collapse
+  Collapse,
+  Button,
+  Drawer,
+  Divider
 } from '@material-ui/core';
+import {
+  ExpandLess,
+  ExpandMore,
+  StarBorder,
+  Settings
+} from '@material-ui/icons';
+import { AppPropsInterface } from '../utils/interfaces';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import { ExpandLess, ExpandMore, StarBorder } from '@material-ui/icons';
 import NewItem from './NewItem';
+
+interface DrawerInterface extends AppPropsInterface {
+  drawerOut: boolean;
+  setDrawerOut: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 
 const useStyles: (
   props?: any
-) => Record<'root' | 'nested', string> = makeStyles((theme: Theme) =>
+) => Record<
+  'root' | 'nested' | 'list' | 'fullList' | 'group' | 'settings',
+  string
+> = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: '100%',
@@ -26,13 +44,39 @@ const useStyles: (
     },
     nested: {
       paddingLeft: theme.spacing(4)
+    },
+    list: {
+      width: 250
+    },
+    fullList: {
+      width: 'auto'
+    },
+    group: {
+      fontWeight: 900
+    },
+    settings: {
+      position: 'absolute',
+      bottom: '0px',
+      float: 'right'
     }
   })
 );
 
-const ItemList: React.FC = (): JSX.Element => {
+const ItemList: React.FC<DrawerInterface> = ({
+  loginState,
+  setLoginState,
+  username,
+  setUsername,
+  password,
+  setPassword,
+  drawerOut,
+  setDrawerOut
+}): JSX.Element => {
   const { groupID }: { groupID?: string | undefined } = useParams();
-  const classes: Record<'root' | 'nested', string> = useStyles();
+  const classes: Record<
+    'root' | 'nested' | 'list' | 'fullList' | 'group' | 'settings',
+    string
+  > = useStyles();
   const [open, setOpen]: [
     boolean,
     React.Dispatch<React.SetStateAction<boolean>>
@@ -46,6 +90,67 @@ const ItemList: React.FC = (): JSX.Element => {
     setOpen(!open);
   };
 
+  const toggleDrawer: (
+    open: boolean
+  ) => (
+      event: React.KeyboardEvent<Element> | React.MouseEvent<Element, MouseEvent>
+    ) => void = (open: boolean) => (
+      event: React.KeyboardEvent | React.MouseEvent
+    ): void => {
+      if (
+        event.type === 'keydown' &&
+        ((event as React.KeyboardEvent).key === 'Tab' ||
+          (event as React.KeyboardEvent).key === 'Shift')
+      ) {
+        return;
+      }
+
+      setDrawerOut(open);
+    };
+
+  const list: () => JSX.Element = (): JSX.Element => (
+    <div
+      className={classes.list}
+      role="presentation"
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+    >
+      <List>
+        <ListItem className={classes.group} button key="title">
+          <ListItemText className={classes.group} primary="Groups" />
+        </ListItem>
+        {['Family', 'Friends', 'The bois', 'Obama'].map((text) => (
+          <Link
+            to={`/list/${text}`}
+            style={{ textDecoration: 'none', color: 'black' }}
+          >
+            <ListItem button key={text}>
+              <ListItemText primary={text} />
+            </ListItem>
+          </Link>
+        ))}
+      </List>
+      <Divider />
+      <List className={classes.settings}>
+        <ListItem className={classes.group} button key="settings">
+          <Link
+            to={`/settings`}
+            style={{ textDecoration: 'none', color: 'black' }}
+          >
+            <ListItemIcon style={{ float: 'left' }}>
+              <Settings />
+            </ListItemIcon>
+          </Link>
+          <Link
+            to={`/settings`}
+            style={{ textDecoration: 'none', color: 'black' }}
+          >
+            <ListItemText className={classes.group} primary="Settings" />
+          </Link>
+        </ListItem>
+      </List>
+    </div>
+  );
   const newItemClick: () => void = (): void => {
     setOpenForm(!openForm);
   }
@@ -93,6 +198,11 @@ const ItemList: React.FC = (): JSX.Element => {
           </Collapse>
         </ListItem>
       </List>
+      <Button onClick={toggleDrawer(true)}>See Groups</Button>
+
+      <Drawer anchor={'left'} open={drawerOut} onClose={toggleDrawer(false)}>
+        {list()}
+      </Drawer>
     </div>
   );
 };

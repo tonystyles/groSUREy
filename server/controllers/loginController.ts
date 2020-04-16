@@ -34,6 +34,7 @@ const verifyCredentials: Handler = (req, res, next) => {
           req.body.password,
           user.rows[0].password,
           (err, success) => {
+            if (!success) return res.json({ verified: false });
             res.locals.verifed = true;
             res.locals.userId = user.rows[0]._id;
             return next();
@@ -78,7 +79,6 @@ const isLoggedIn: Handler = (req, res, next) => {
   `;
 
   const values = [req.cookies.ssid, req.cookies.userId];
-  console.log(values);
 
   db.query(query, values)
     .then((session) => {
@@ -106,6 +106,8 @@ const logoutUser: Handler = (req, res, next) => {
   db.query(query, values)
     .then((success) => {
       res.locals.isLoggedIn = false;
+      res.clearCookie("ssid");
+      res.clearCookie("userId");
       return next();
     })
     .catch((e) => next(e));
