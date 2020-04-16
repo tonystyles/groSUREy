@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Button, Container, FormControl, TextField } from '@material-ui/core';
+import { Link, Redirect } from 'react-router-dom';
+import { response } from 'express';
 
 interface PropsInt {
   loginState: boolean;
@@ -84,7 +86,7 @@ const LoginPage: React.FC<PropsInt> = ({
             type="password"
             autoComplete="current-password"
             onChange={(e) => setPassword(e.target.value)}
-          />
+          />          
           <Button
             className={classes.button}
             variant="outlined"
@@ -93,6 +95,15 @@ const LoginPage: React.FC<PropsInt> = ({
           >
             Log In
           </Button>
+          <Link to="/signupPage">
+          <Button
+            className={classes.button}
+            variant="outlined"
+            type="submit"
+          >
+            Sign Up
+          </Button>
+          </Link>
         </FormControl>
       </Container>
     </>
