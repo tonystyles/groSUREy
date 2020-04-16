@@ -9,6 +9,20 @@
 
 ## User Api
 
+### User Data
+
+`method` GET
+`route` /user
+`returns`
+
+- **isLoggedIn**: boolean
+- **userData**:
+  - \_id: number;
+  - username: string;
+  - profile_pic: null or string (url to pic)
+  - alias: null or string
+  - email: strgin
+
 ### Login
 
 `method` POST
@@ -50,6 +64,112 @@
 
 ## Groups Api
 
+### Get Groups of Logged In User
+
+`method` GET
+`route` /groups
+`returns` json
+
+- **isLoggedIn**: boolean;
+- **groups**: array of group objects:
+  - \_id: number;
+  - groupname: string;
+  - alias: null or string;
+  - picture: null or string;
+
+### Create Group
+
+`method` POST
+`route` /groups/create
+`body` json
+
+- **groupName**: string _must be unique_
+- **alias**: string
+
+`returns` json
+
+- **isLoggedIn**: boolean;
+- **group**: object
+  - \_id: number;
+  - groupname: string;
+  - alias: null or string;
+  - picture: null or string
+
+### join group
+
+`method` POST
+`route` /groups/join
+`body` json
+
+- **groupId**: number;
+
+`returns` json
+
+- **isLoggedIn**: boolean;
+- **groups**: array of group objects:
+  - \_id: number;
+  - groupname: string;
+  - alias: null or string;
+  - picture: null or string;
+
 ## Lists Api
+
+### get lists
+
+`method` GET
+`route` /lists
+`query` ?groupId=<groupId>
+
+- key: `listId`
+- value: number
+
+`returns` json
+
+- **lists**: array of list objects:
+  - \_id: number
+  - group_id: number
+  - name: string
+
+### create lists
+
+`method` POST
+`route` /lists
+`body` json
+
+- **groupId**: number
+- **name**: string
+
+`returns` json
+
+- **list**: list object
+  - \_id: number
+  - group_id: number
+  - name: string
+
+### update list
+
+`method` PUT
+`route` /lists
+`body` json
+
+- **listId**: number
+- **name**: string
+
+`returns` json
+
+- **list**: list object
+  - \_id: number
+  - group_id: number
+  - name: string
+
+### delete list
+
+`method` DELETE
+`route` /lists
+`body` json
+
+- **listId**: number
+
+`returns` n/a
 
 ## Items Api

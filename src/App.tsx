@@ -1,13 +1,12 @@
-import 'typeface-roboto';
-import * as React from 'react';
-import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import LoginPage from './components/LoginPage';
-import HomePage from './components/HomePage';
-import ItemList from './components/ItemList';
-import { AppPropsInterface } from './utils/interfaces';
-import SignupPage from './components/SignupPage';
-
+import "typeface-roboto";
+import * as React from "react";
+import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import LoginPage from "./components/LoginPage";
+import HomePage from "./components/HomePage";
+import ItemList from "./components/ItemList";
+import { AppPropsInterface } from "./utils/interfaces";
+import SignupPage from "./components/SignupPage";
 
 interface SignupPropsInterface {
   fullName: string;
@@ -22,37 +21,15 @@ interface SignupPropsInterface {
   setAlias: React.Dispatch<React.SetStateAction<string>>;
 }
 
-
 const App: React.FC = (): JSX.Element => {
+  const [loginState, setLoginState] = useState<boolean>(false);
+  const [name, setName] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [drawerOut, setDrawerOut] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>("");
+  const [alias, setAlias] = useState<string>("");
 
-  const [loginState, setLoginState]: [
-    boolean,
-    React.Dispatch<React.SetStateAction<boolean>>
-  ] = useState<boolean>(false);
-  const [fullName, setFullName]: [
-    string,
-    React.Dispatch<React.SetStateAction<string>>
-  ] = useState<string>('');
-  const [username, setUsername]: [
-    string,
-    React.Dispatch<React.SetStateAction<string>>
-  ] = useState<string>('');
-  const [password, setPassword]: [
-    string,
-    React.Dispatch<React.SetStateAction<string>>
-  ] = useState<string>('');
-  const [drawerOut, setDrawerOut]: [
-    boolean,
-    React.Dispatch<React.SetStateAction<boolean>>
-  ] = useState<boolean>(false);
-  const [email, setEmail]: [
-    string,
-    React.Dispatch<React.SetStateAction<string>>
-  ] = useState<string>('');
-  const [alias, setAlias]: [
-    string,
-    React.Dispatch<React.SetStateAction<string>>
-  ] = useState<string>('');
 
   const loginProps: AppPropsInterface = {
     loginState,
@@ -60,28 +37,27 @@ const App: React.FC = (): JSX.Element => {
     username,
     setUsername,
     password,
-    setPassword
+    setPassword,
   };
 
   const drawerProps: any = {
     drawerOut,
-    setDrawerOut
+    setDrawerOut,
   };
 
   useEffect(() => {
     const fetchLogin = async () => {
       try {
-        const response = await fetch('/user/');
+        const response = await fetch("/user/");
         const json = await response.json();
         if (json.isLoggedIn) {
           setLoginState(true);
-          console.log('success!');
-        }
-        else {
+          console.log("success!");
+        } else {
           setLoginState(false);
         }
       } catch (error) {
-        console.log('Request to sever failed');
+        console.log("Request to sever failed");
       }
     };
     if (!loginState) fetchLogin();
