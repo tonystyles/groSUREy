@@ -1,7 +1,7 @@
 import { Pool, QueryResult } from "pg";
 
 // url string to access database
-import elephantSecret from "../_secrets/elephantSecret";
+import elephantSecret from "../_secrets";
 
 const pool = new Pool({
   connectionString: elephantSecret.url,
