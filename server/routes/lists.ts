@@ -1,12 +1,12 @@
 import express from "express";
 
-const itemsRouter = express.Router();
+const listsRouter = express.Router();
 
 // import controllers
 import listsController from "../controllers/listsController";
 import loginController from "../controllers/loginController";
 
-itemsRouter
+listsRouter
   .route("/")
   .get(loginController.isLoggedIn, listsController.getLists, (req, res) =>
     res.json(res.locals)
@@ -21,4 +21,4 @@ itemsRouter
     res.sendStatus(200)
   );
 
-export default itemsRouter;
+export default listsRouter;

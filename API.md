@@ -173,3 +173,93 @@
 `returns` n/a
 
 ## Items Api
+
+### get items
+
+`method` GET
+`route` /items?listId=<listId>
+`query`
+
+- key: `listId`
+- value: number
+
+`returns` json
+
+- **items**: array of item objects:
+  - \_id: number
+  - list_id: number
+  - name: string
+  - checked: boolean
+  - max_price: number
+  - brand: string
+  - quantity: string
+  - notes: string
+
+### create items
+
+`method` POST
+`route` /items
+`body` json
+
+- **item**: object
+
+  - listId: number
+  - name: string
+  - quantity: string
+
+  _optional_
+
+  - maxPrice: number
+  - brand: string
+  - notes: string
+
+`returns` json
+
+- **item**: item object
+  - \_id: number
+  - list_id: number
+  - name: string
+  - checked: boolean
+  - max_price: number
+  - brand: string
+  - quantity: string
+  - notes: string
+
+### update item
+
+`method` PUT
+`route` /items
+`body` json
+
+- **itemId**: number
+- **item**: object
+
+  _optional_
+
+  - name: string
+  - quantity: string
+  - maxPrice: numberor null
+  - notes: string
+  - checked: boolean
+
+`returns` json
+
+- **item**: item object
+  - \_id: number
+  - list_id: number
+  - name: string
+  - checked: boolean
+  - max_price: number
+  - brand: string
+  - quantity: string
+  - notes: string
+
+### delete item
+
+`method` DELETE
+`route` /items
+`body` json
+
+- **itemid**: number
+
+`returns` n/a
