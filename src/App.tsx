@@ -16,6 +16,7 @@ interface LoginPropsInterface {
   setPassword: React.Dispatch<React.SetStateAction<string>>;
 }
 
+
 interface SignupPropsInterface {
   name: string;
   setName: React.Dispatch<React.SetStateAction<string>>;
@@ -27,7 +28,9 @@ interface SignupPropsInterface {
   setEmail: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const App: React.FC= (): JSX.Element => {
+
+const App: React.FC = (): JSX.Element => {
+
   const [loginState, setLoginState]: [
     boolean,
     React.Dispatch<React.SetStateAction<boolean>>
