@@ -10,8 +10,10 @@ import {
   ListItemText,
   Collapse
 } from '@material-ui/core';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 import { ExpandLess, ExpandMore, StarBorder } from '@material-ui/icons';
-import newItem from './newItem';
+import NewItem from './newItem';
 
 const useStyles: (
   props?: any
@@ -35,10 +37,18 @@ const ItemList: React.FC = (): JSX.Element => {
     boolean,
     React.Dispatch<React.SetStateAction<boolean>>
   ] = useState<boolean>(true);
+  const [openForm, setOpenForm]: [
+    boolean,
+    React.Dispatch<React.SetStateAction<boolean>>
+  ] = useState<boolean>(true);
 
   const handleClick: () => void = (): void => {
     setOpen(!open);
   };
+
+  const newItemClick: () => void = (): void => {
+    setOpenForm(!openForm);
+  }
 
   return (
     <div>
@@ -73,6 +83,15 @@ const ItemList: React.FC = (): JSX.Element => {
             </ListItem>
           </List>
         </Collapse>
+        <ListItem button onClick={newItemClick}>
+          {openForm ? <ListItemText primary="Add new item" /> : <ListItemText primary="" />}
+          {openForm ? <Fab size="small" color="primary" aria-label="add" onClick={newItemClick}>
+            <AddIcon />
+          </Fab> : <ExpandLess />}
+          <Collapse in={!openForm} timeout="auto" unmountOnExit>
+            <NewItem></NewItem>
+          </Collapse>
+        </ListItem>
       </List>
     </div>
   );
