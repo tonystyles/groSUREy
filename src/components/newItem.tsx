@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { TextField } from '@material-ui/core';
 
 const NewItem: React.FC = (): JSX.Element => {
